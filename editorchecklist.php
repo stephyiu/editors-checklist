@@ -90,6 +90,8 @@ License: GPL2
         );
 
       echo '<form method="post">';
+      //adding invisible nonce check
+        wp_nonce_field('submit_checklist_options','checklist_options');
 
         //checks for which boxes should already be checked based on what's stored in the options table
         foreach ( (array) $checklist_options as $item ) {
@@ -108,15 +110,20 @@ License: GPL2
   }
 
   public function on_options_submit() {
+    if ( ! isset( $_POST['checklist_options'] ) || ! wp_verify_nonce( $_POST['checklist_options'], 'submit_checklist_options' ) ) {
+      return;
+    }
+
     // grab options data save it to enablecheck
     $enablecheck = $_POST['enablecheck'];
 
     // only save it if enablecheck has data to save
     if ($enablecheck){
-        //josh's helpful sanitize array tip
-        array_map( 'sanitize_key', $enablecheck );
-        update_option('enablechecks', $enablecheck);
-   }
+      //josh's helpful sanitize array tip
+      array_map( 'sanitize_key', $enablecheck );
+      update_option('enablechecks', $enablecheck);
+    }
+
   }
 
   public function activate_editors_checklist() {
