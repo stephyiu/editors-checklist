@@ -12,7 +12,7 @@ License: GPL2
  class CG_Editors_Checklist {
     function __construct() {
     	add_action( 'post_submitbox_misc_actions', array( $this, 'add_editors_checklist' ) );
-    	add_action( 'admin_init', array( $this, 'enqueue_admin_scripts' ) );
+    	add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_scripts' ) );
       add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_print_styles' ) );
       add_action( 'admin_menu' , array( $this, 'add_checklist_menu' ) );
       add_action ( 'admin_init', array( $this, 'on_options_submit' ) );
