@@ -2,13 +2,13 @@
 /*
 Plugin Name: Editor's Checklist
 Plugin URI:
-Description: Hides the 'Publish' button on the Edit Post page unless certain fields are completed, such as Headline, Excerpt, and Featured image. Users can set which fields are required in Settings > Editor's Checklist Options. 
+Description: Hides the 'Publish' button on the Edit Post page unless certain fields are completed, such as Headline, Excerpt, and Featured image. Users can set which fields are required in Settings > Editor's Checklist Options.
 Author: crushgear
 Version: 0.1
 Author URI: http://hoppycow.com/
 License: GPL2
 */
- 
+
  class CG_Editors_Checklist {
     function __construct() {
     	add_action( 'post_submitbox_misc_actions', array( $this, 'add_editors_checklist' ) );
@@ -21,7 +21,7 @@ License: GPL2
 
 	public function enqueue_admin_scripts() {
       //call scripts
-    	$script_url = plugins_url( '/js/admin.js', __FILE__ ); 
+    	$script_url = plugins_url( '/js/admin.js', __FILE__ );
     	wp_enqueue_script( 'pluginpug_admin_script', $script_url, array( 'jquery' ) );
 	}
 
@@ -42,9 +42,9 @@ License: GPL2
 
         //grab array from options table
         $shouldchecks = get_option( 'enablechecks' );
-     		
+
         //array of what should print in the publish metabox
-     		$checklist = array( 
+     		$checklist = array(
      				array('questions'=>' Is there a headline?', 'names'=>'headlinecheck'),
      				array('questions'=>' Is there a featured image?', 'names'=>'featuredcheck'),
      				array('questions'=>' Is there at least one tag?', 'names'=>'tagcheck'),
@@ -58,13 +58,13 @@ License: GPL2
         //prints the checklist
       	foreach ( (array) $checklist as $item ) {
       		if( in_array( $item['names'], $shouldchecks ) ) {
-          echo "<input name='" . $item['names'] . "' type='checkbox'/>" . $item['questions'] . "<br/>";
+           echo "<input name='" . esc_attr( $item['names'] ) . "' type='checkbox'/>" . esc_html( $item['questions'] ) . "<br/>";
           }
       	}
 
-        echo "</div>"; 
+        echo "</div>";
       }
- 
+
     }
 
   public function add_checklist_menu() {
@@ -97,10 +97,10 @@ License: GPL2
           if( in_array( $item['value'], $shouldchecks ) ) {
             $checked = 'checked';
           }
-          // totally crazy echoing thing to print out a few darn checkboxes 
-          echo '<fieldset><input name="enablecheck[]" id="' . $item['value'] . '" type="checkbox" value="' . $item['value'] . '"' . $checked . ' /> <label for="'  . $item['value'] . '"> ' . $item['words'] . "</label></fieldset>" ;
+          // totally crazy echoing thing to print out a few darn checkboxes
+          echo '<fieldset><input name="enablecheck[]" id="' . esc_attr( $item['value'] ) . '" type="checkbox" value="' . esc_attr( $item['value'] ) . '"' . $checked . ' /> <label for="'  . esc_attr( $item['value'] ) . '"> ' .  esc_html( $item['words'] ) . "</label></fieldset>" ;
         }
-    
+
     submit_button();
 
     echo '</form>';
@@ -121,7 +121,7 @@ License: GPL2
 
   public function activate_editors_checklist() {
     //when plugin is first installed, activate all checks
-    //if plugin has previously been installed, maintain user's options   
+    //if plugin has previously been installed, maintain user's options
     $enablecheck = get_option('enablechecks');
 
     if (!$enablecheck) {
@@ -130,6 +130,6 @@ License: GPL2
     }
   }
 
-} 
+}
 
 $cg_editors_checklist = new CG_Editors_Checklist();
