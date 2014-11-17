@@ -37,7 +37,7 @@ License: GPL2
     if ( 'post' != $screen->base ) {
       return;
     }
-    
+
     // calls styles
     $plugin_style_url = plugins_url( '/styles.css', __FILE__ );
     wp_register_style( 'editors_checklist_styles', $plugin_style_url );
@@ -128,11 +128,13 @@ License: GPL2
 
     // grab options data save it to enablecheck
     $enablecheck = $_POST['enablecheck'];
+    if ( ! isset( $_POST['enablecheck'] ) )
+      return; 
 
     // only save it if enablecheck has data to save
     if ($enablecheck){
-      //josh's helpful sanitize array tip
-      array_map( 'sanitize_key', $enablecheck );
+      //josh's helpful sanitize array tip, update 2014
+      $enablecheck = array_map( 'sanitize_key', $enablecheck );
       update_option('enablechecks', $enablecheck);
     }
 
