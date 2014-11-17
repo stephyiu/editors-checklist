@@ -20,12 +20,24 @@ License: GPL2
     }
 
 	public function enqueue_admin_scripts() {
+      //only load this if on edit post screen
+      $screen = get_current_screen();
+      if ( 'post' != $screen->base ) {
+        return;
+      }
+
       //call scripts
     	$script_url = plugins_url( '/js/admin.js', __FILE__ );
     	wp_enqueue_script( 'pluginpug_admin_script', $script_url, array( 'jquery' ) );
 	}
 
   public function enqueue_print_styles() {
+    //only load this if in edit post screen
+    $screen = get_current_screen();
+    if ( 'post' != $screen->base ) {
+      return;
+    }
+    
     // calls styles
     $plugin_style_url = plugins_url( '/styles.css', __FILE__ );
     wp_register_style( 'editors_checklist_styles', $plugin_style_url );
